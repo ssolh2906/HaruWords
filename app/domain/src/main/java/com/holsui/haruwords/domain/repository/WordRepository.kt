@@ -9,5 +9,5 @@ interface WordRepository {
 
     fun addWord(word: Word)
 
-    fun deleteWord(id: String)
+    fun deleteWord(word: Word)
 }

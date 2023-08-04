@@ -82,4 +82,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation(project(":app:domain"))
+    implementation(project(":app:data"))
 }

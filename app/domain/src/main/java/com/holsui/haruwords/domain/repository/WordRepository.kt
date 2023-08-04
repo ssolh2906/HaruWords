@@ -1,12 +1,13 @@
 package com.holsui.haruwords.domain.repository
 
 import com.holsui.haruwords.domain.models.Word
+import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {
 
-    suspend fun getAllWords(): List<Word>
+    fun getAllWords(): Flow<List<Word>>
 
-    suspend fun addWord(word: Word)
+    fun addWord(word: Word)
 
-    suspend fun deleteWord(id: String)
+    fun deleteWord(id: String)
 }

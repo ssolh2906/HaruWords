@@ -3,6 +3,7 @@ ktx = "1.10.1"
 lifecycle-version = "2.6.1"
 activity-compose = "1.7.2"
 symbol-processing-api = "1.9.0-1.0.11"
+hilt-android = "2.44.2"
 room-version = "2.5.2"
 
 espresso-core = "3.5.1"
@@ -17,6 +18,8 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-version" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-version" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "symbol-processing-api" }
 
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }

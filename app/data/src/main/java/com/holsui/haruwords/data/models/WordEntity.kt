@@ -3,10 +3,10 @@ package com.holsui.haruwords.data.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.holsui.haruwords.domain.models.WordModel
+import com.holsui.haruwords.domain.models.Word
 
 @Entity(tableName = "words")
-data class WordModelEntity(
+data class WordEntity(
     @PrimaryKey
     @ColumnInfo(name = "primary_key")
     val id: String,
@@ -17,7 +17,7 @@ data class WordModelEntity(
     val mean: String
 )
 
-fun WordModelEntity.asExternalModel() = WordModel(
+fun WordEntity.asExternalModel() = Word(
     id = id,
     word = word,
     mean = mean

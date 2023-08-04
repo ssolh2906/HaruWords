@@ -40,7 +40,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.2"
     }
     packaging {
         resources {
@@ -52,6 +52,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.ktx)
+    implementation(libs.symbol.processing.api)
     implementation(libs.androidx.lifecycle)
     implementation(libs.androidx.activity.compose)
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))

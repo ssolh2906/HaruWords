@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.holsui.haruwords.data.models.WordEntity
+import dagger.Provides
 import kotlinx.coroutines.flow.Flow
 
 @Dao

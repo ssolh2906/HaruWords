@@ -2,6 +2,7 @@ package com.holsui.haruwords.data.database
 
 import android.content.Context
 import androidx.room.Room
+import com.holsui.haruwords.data.database.dao.WordDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +22,9 @@ object DatabaseModule {
         HaruDatabase::class.java,
         "haru-database"
     ).build()
+
+    @Provides
+    fun providesWordDao(database: HaruDatabase) : WordDao {
+        return database.wordDao()
+    }
 }

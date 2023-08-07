@@ -83,13 +83,13 @@ dependencies {
     testImplementation(libs.junit)
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    testImplementation ("com.google.dagger:hilt-android-testing:2.47")
+    testImplementation (libs.hilt.android.testing)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation  ("com.google.dagger:hilt-android-testing:2.47")
+    androidTestImplementation  (libs.hilt.android.testing)
 
     // For local unit tests
 //    kapt ("com.google.dagger:hilt-compiler:2.47")

@@ -13,7 +13,7 @@ hilt = "2.44.2"
 espresso-core = "3.5.1"
 androidx-junit = "1.1.5"
 junit = "4.13.2"
-compose-bom = "2023.06.01"
+compose-bom = "2023.10.00"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }

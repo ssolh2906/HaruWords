@@ -57,14 +57,6 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.symbol.processing.api)
     implementation(libs.androidx.lifecycle)
-    // Compose
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation(libs.androidx.material3)
-    implementation("androidx.compose.material3:material3-window-size-class:1.2.0-alpha09")
 
     // Room
     implementation(libs.androidx.room.runtime)

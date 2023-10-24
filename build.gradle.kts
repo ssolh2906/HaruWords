@@ -4,7 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("com.android.library") version "8.1.2" apply false
     kotlin("jvm") version "1.8.10" apply false
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
     alias(libs.plugins.hilt) apply false
 }
 

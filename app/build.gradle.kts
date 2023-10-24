@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
     alias(libs.plugins.hilt)
     kotlin("kapt")
 }
@@ -57,19 +56,24 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.symbol.processing.api)
     implementation(libs.androidx.lifecycle)
-
     // Compose
-    implementation(platform(libs.androidx.compose.bom))
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.material3)
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
+
+    // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation(libs.androidx.material3)
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
 
     // Navigation
     implementation(libs.androidx.navigation.runtime.ktx)
@@ -82,13 +86,11 @@ dependencies {
 
     // Test
     testImplementation(libs.junit)
-    debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     testImplementation (libs.hilt.android.testing)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation  (libs.hilt.android.testing)
 

@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
     kotlin("kapt")
 }
 
@@ -41,9 +40,6 @@ android {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.lifecycle)
@@ -51,11 +47,14 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // Compose
-    implementation(platform(libs.androidx.compose.bom))
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.material3)
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
-    implementation(libs.androidx.material3)
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -78,5 +77,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    // Project
     implementation(project(":app:domain"))
 }

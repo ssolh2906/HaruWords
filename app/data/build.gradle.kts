@@ -43,7 +43,7 @@ dependencies {
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.lifecycle)
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation(libs.androidx.appcompat)
 
     //Room
     implementation(libs.androidx.room.runtime)
@@ -55,9 +55,9 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     // Test
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     // Project
     implementation(project(":app:domain"))

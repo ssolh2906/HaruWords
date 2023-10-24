@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.symbol.processing.api)
     implementation(libs.androidx.lifecycle)
+
     // Compose
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)

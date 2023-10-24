@@ -58,6 +58,14 @@ dependencies {
     implementation(libs.symbol.processing.api)
     implementation(libs.androidx.lifecycle)
 
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation(libs.androidx.material3)
+
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -87,6 +95,7 @@ dependencies {
     // For local unit tests
 //    kapt ("com.google.dagger:hilt-compiler:2.47")
 
+    // Project
     implementation(project(":app:domain"))
     implementation(project(":app:data"))
     implementation(project(":app:feature"))

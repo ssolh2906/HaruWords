@@ -12,9 +12,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -39,24 +43,52 @@ fun WordsListRoute(
     WordsListScreen(wordList)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WordsListScreen(
     wordList: List<Word>,
     modifier: Modifier = Modifier
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    var isSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
 
-
-    Box(modifier = modifier.fillMaxSize()) {
-        WordList(wordList)
-
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(24.dp)
+    Scaffold(floatingActionButton = {
+        AddButton(
+            modifier = Modifier.Companion
+                .padding(24.dp),
+            onClick = { isSheetOpen = true })
+    }
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Add new word")
+            WordList(wordList)
+
+            if (isSheetOpen) {
+                NewWordBottomSheet(
+                    modifier = Modifier,
+                    sheetState = sheetState,
+                    onDismissRequest = { isSheetOpen = false }
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun AddButton(
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    FloatingActionButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Icon(imageVector = Icons.Default.Add, contentDescription = "Add new word")
     }
 }
 
@@ -90,10 +122,20 @@ private fun WordList(wordList: List<Word>) {
 @Composable
 fun NewWordBottomSheet(
     modifier: Modifier,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit
 ) {
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(true)
-
+    ModalBottomSheet(
+        onDismissRequest = {
+            onDismissRequest.invoke()
+        },
+        sheetState = sheetState
+    )
+    {
+        Button(onClick = {}) {
+            Text(text = "ADD")
+        }
+    }
 }
 
 @Composable

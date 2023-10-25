@@ -1,6 +1,7 @@
 package com.holsui.haruwords.feature.wordslist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,19 +35,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.holsui.haruwords.domain.models.Word
+import com.holsui.haruwords.feature.util.Action
+import com.holsui.haruwords.feature.util.ActionListener
 
 @Composable
 fun WordsListRoute(
     viewModel: WordsListViewModel = hiltViewModel()
 ) {
     val wordList by viewModel.wordList.collectAsState()
-    WordsListScreen(wordList)
+    val actionListener: ActionListener = object : ActionListener {
+        override fun onClick(action: Action) {
+            when (action) {
+                WordListActions.OnAddClick -> {}
+                else -> {}
+            }
+        }
+
+
+    }
+    WordsListScreen(wordList, actionListener)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WordsListScreen(
     wordList: List<Word>,
+    actionListener: ActionListener,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -72,7 +86,8 @@ fun WordsListScreen(
                 NewWordBottomSheet(
                     modifier = Modifier,
                     sheetState = sheetState,
-                    onDismissRequest = { isSheetOpen = false }
+                    onDismissRequest = { isSheetOpen = false },
+                    onAddClick = { actionListener.onClick(WordListActions.OnAddClick) }
                 )
             }
         }
@@ -123,7 +138,8 @@ private fun WordList(wordList: List<Word>) {
 fun NewWordBottomSheet(
     modifier: Modifier,
     sheetState: SheetState,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onAddClick: () -> Unit
 ) {
     ModalBottomSheet(
         onDismissRequest = {
@@ -133,7 +149,7 @@ fun NewWordBottomSheet(
     )
     {
         Button(onClick = {}) {
-            Text(text = "ADD")
+            Text(text = "ADD", Modifier.clickable { onAddClick() })
         }
     }
 }
@@ -145,6 +161,11 @@ fun PreviewWordList() {
         listOf(
             Word("0", "Cat", "고양이"),
             Word("1", "Dog", "강아지")
-        )
+        ),
+        actionListener = object : ActionListener {
+            override fun onClick(action: Action) {
+                /* no-op */
+            }
+        }
     )
 }

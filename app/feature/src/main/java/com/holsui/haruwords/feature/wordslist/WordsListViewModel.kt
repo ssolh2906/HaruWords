@@ -9,12 +9,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WordsListViewModel @Inject constructor(
-    val addWordUseCase: AddWordUseCase,
-    val getAllWordsUseCase: GetAllWordsUseCase
+    private val addWordUseCase: AddWordUseCase,
+    private val getAllWordsUseCase: GetAllWordsUseCase
 ) : ViewModel() {
 
     val wordList: StateFlow<List<Word>> = getAllWordsUseCase().stateIn(
@@ -22,4 +23,12 @@ class WordsListViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyList()
     )
+
+    fun addWord() {
+        viewModelScope.launch {
+            addWordUseCase.invoke(Word(
+                id = "", word = "고양이", mean = "cat"
+            ))
+        }
+    }
 }

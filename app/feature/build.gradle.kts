@@ -43,6 +43,8 @@ dependencies {
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material3)
 

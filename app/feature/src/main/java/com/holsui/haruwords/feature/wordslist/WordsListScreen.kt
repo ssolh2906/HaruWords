@@ -1,7 +1,6 @@
 package com.holsui.haruwords.feature.wordslist
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,8 +45,12 @@ fun WordsListRoute(
     val actionListener: ActionListener = object : ActionListener {
         override fun onClick(action: Action) {
             when (action) {
-                WordListActions.OnAddClick -> {}
-                else -> {}
+                WordListActions.OnAddClick -> {
+                    viewModel.addWord()
+                }
+
+                else -> {/* no-op */
+                }
             }
         }
 
@@ -143,13 +146,19 @@ fun NewWordBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = {
-            onDismissRequest.invoke()
+            onDismissRequest()
         },
         sheetState = sheetState
     )
     {
-        Button(onClick = {}) {
-            Text(text = "ADD", Modifier.clickable { onAddClick() })
+        Column(modifier = modifier.padding(24.dp)) {
+
+
+            Button(onClick = {
+                onAddClick()
+            }) {
+                Text(text = "ADD")
+            }
         }
     }
 }

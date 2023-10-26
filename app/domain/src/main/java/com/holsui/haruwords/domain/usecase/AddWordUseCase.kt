@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AddWordUseCase @Inject constructor(private val wordRepository: WordRepository) {
 
-    operator fun invoke(word: Word) {
+    suspend operator fun invoke(word: Word) {
         wordRepository.addWord(word)
     }
 }

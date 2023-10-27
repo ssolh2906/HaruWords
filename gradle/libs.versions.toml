@@ -16,6 +16,9 @@ hiltAndroidTesting = "2.48.1"
 espresso-core = "3.5.1"
 androidx-junit = "1.1.5"
 junit = "4.13.2"
+agp = "8.1.2"
+org-jetbrains-kotlin-android = "1.8.10"
+material = "1.10.0"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -41,8 +44,11 @@ androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-j
 junit = { module = "junit:junit", version.ref = "junit" }
 androidx-compose-bom = {module = "androidx.compose:compose-bom", version.ref = "compose-bom"}
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version = "2.7.4" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+com-android-library = { id = "com.android.library", version.ref = "agp" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 
 [bundles]

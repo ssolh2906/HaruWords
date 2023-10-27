@@ -16,5 +16,5 @@ dependencyResolutionManagement {
 rootProject.name = "HaruWords"
 include(":app")
 include(":data")
-include(":app:domain")
+include(":domain")
 include(":app:feature")

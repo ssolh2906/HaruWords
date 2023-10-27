@@ -100,7 +100,7 @@ dependencies {
 //    kapt ("com.google.dagger:hilt-compiler:2.47")
 
     // Project
-    implementation(project(":app:domain"))
+    implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":app:feature"))
 }

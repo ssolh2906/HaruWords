@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class WordRepositoryImpl @Inject constructor(
     private val wordDao: WordDao,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val defaultDispatcher: CoroutineDispatcher
 ) : WordRepository {
 
     override fun getAllWords(): Flow<List<Word>> {

@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.holsui.haruwords.domain.models.Word
 import com.holsui.haruwords.feature.util.Action
@@ -42,6 +43,8 @@ fun WordsListRoute(
     viewModel: WordsListViewModel = hiltViewModel()
 ) {
     val wordList by viewModel.wordList.collectAsState()
+    val showAlert by viewModel.showAlert
+
     val actionListener: ActionListener = object : ActionListener {
         override fun onClick(action: Action) {
             when (action) {
@@ -56,7 +59,7 @@ fun WordsListRoute(
 
 
     }
-    WordsListScreen(wordList, actionListener)
+    WordsListScreen(wordList, actionListener, showAlert)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +67,7 @@ fun WordsListRoute(
 fun WordsListScreen(
     wordList: List<Word>,
     actionListener: ActionListener,
+    showAlert: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -78,6 +82,11 @@ fun WordsListScreen(
             onClick = { isSheetOpen = true })
     }
     ) {
+        if (showAlert) {
+            Dialog(onDismissRequest = {}) {
+                Text(text = "Duplicated Word")
+            }
+        }
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -175,6 +184,6 @@ fun PreviewWordList() {
             override fun onClick(action: Action) {
                 /* no-op */
             }
-        }
+        },
     )
 }

@@ -1,5 +1,7 @@
 package com.holsui.haruwords.feature.wordslist
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.holsui.haruwords.domain.models.Word
@@ -18,6 +20,10 @@ class WordsListViewModel @Inject constructor(
     private val getAllWordsUseCase: GetAllWordsUseCase
 ) : ViewModel() {
 
+
+    private val _showAlert = mutableStateOf(false)
+    val showAlert: MutableState<Boolean> get() = _showAlert
+
     val wordList: StateFlow<List<Word>> = getAllWordsUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
@@ -26,9 +32,16 @@ class WordsListViewModel @Inject constructor(
 
     fun addWord() {
         viewModelScope.launch {
-            addWordUseCase.invoke(Word(
-                id = "", word = "고양이", mean = "cat"
-            ))
+            val result = runCatching {
+                addWordUseCase.invoke(
+                    Word(
+                        id = "", word = "고양이", mean = "cat"
+                    )
+                )
+            }
+            result.onFailure {
+                _showAlert.value = true
+            }
         }
     }
 }

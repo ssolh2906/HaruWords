@@ -7,9 +7,9 @@ import com.holsui.haruwords.domain.models.Word
 
 @Entity(tableName = "words")
 data class WordEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "primary_key")
-    val id: String,
+    val id: Int = 0,
 
     @ColumnInfo(name = "word")
     val word: String,

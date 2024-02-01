@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WordsListViewModel @Inject constructor(
     private val addWordUseCase: AddWordUseCase,
-    private val getAllWordsUseCase: GetAllWordsUseCase
+    private val getAllWordsUseCase: GetAllWordsUseCase,
 ) : ViewModel() {
 
 
@@ -35,7 +35,7 @@ class WordsListViewModel @Inject constructor(
             val result = runCatching {
                 addWordUseCase.invoke(
                     Word(
-                        id = "", word = "고양이", mean = "cat"
+                        word = "고양이", mean = "cat"
                     )
                 )
             }

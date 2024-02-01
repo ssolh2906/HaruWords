@@ -177,8 +177,8 @@ fun NewWordBottomSheet(
 fun PreviewWordList() {
     WordsListScreen(
         listOf(
-            Word("0", "Cat", "고양이"),
-            Word("1", "Dog", "강아지")
+            Word(0, "Cat", "고양이"),
+            Word(1, "Dog", "강아지")
         ),
         actionListener = object : ActionListener {
             override fun onClick(action: Action) {

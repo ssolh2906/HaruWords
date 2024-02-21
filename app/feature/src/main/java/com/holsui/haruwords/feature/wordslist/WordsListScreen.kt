@@ -1,12 +1,9 @@
 package com.holsui.haruwords.feature.wordslist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -27,9 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -37,6 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.holsui.haruwords.domain.models.Word
 import com.holsui.haruwords.feature.util.Action
 import com.holsui.haruwords.feature.util.ActionListener
+import com.holsui.haruwords.feature.wordslist.WordListActions.OnCardClick
+import com.holsui.haruwords.feature.wordslist.WordListActions.OnCardLongClick
 
 @Composable
 fun WordsListRoute(
@@ -44,6 +42,7 @@ fun WordsListRoute(
 ) {
     val wordList by viewModel.wordList.collectAsState()
     val showAlert by viewModel.showAlert
+    val isPopUpVisible by viewModel.isPopUpVisible
 
     val actionListener: ActionListener = object : ActionListener {
         override fun onClick(action: Action) {
@@ -52,14 +51,26 @@ fun WordsListRoute(
                     viewModel.addWord()
                 }
 
+                is OnCardClick -> {
+
+                }
+
                 else -> {/* no-op */
+                }
+            }
+        }
+
+        override fun onLongPress(action: Action) {
+            when (action) {
+                is OnCardLongClick -> {
+                    viewModel.showPopUpMenu(action.contextMenuWordId)
                 }
             }
         }
 
 
     }
-    WordsListScreen(wordList, actionListener, showAlert)
+    WordsListScreen(wordList, actionListener, showAlert, isPopUpVisible)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,10 +79,15 @@ fun WordsListScreen(
     wordList: List<Word>,
     actionListener: ActionListener,
     showAlert: Boolean = false,
+    isPopUpVisible: Boolean = false,
+    popUpWordId: Int? = null,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var isPopUpOpen by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -87,12 +103,21 @@ fun WordsListScreen(
                 Text(text = "Duplicated Word")
             }
         }
+        if (isPopUpOpen) {
+            Dialog(onDismissRequest = { isPopUpOpen = false }) {
+                Surface {
+                    Column {
+                        Text(text = "pop up for id:" + popUpWordId)
+                    }
+                }
+            }
+        }
         Box(
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            WordList(wordList)
+            WordList(wordList, actionListener)
 
             if (isSheetOpen) {
                 NewWordBottomSheet(
@@ -120,27 +145,18 @@ private fun AddButton(
 }
 
 @Composable
-private fun WordList(wordList: List<Word>) {
+private fun WordList(wordList: List<Word>, actionListener: ActionListener) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier.padding(12.dp)
     ) {
         items(wordList) { word ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .background(Color.White)
-                    .padding(12.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column {
-                    Text(text = word.word)
-                    Text(text = word.mean)
+            WordCard(
+                word,
+                onLongClick = { id ->
+                    actionListener.onLongPress(OnCardLongClick(contextMenuWordId = id))
                 }
-
-
-            }
+            )
         }
     }
 }
@@ -161,8 +177,6 @@ fun NewWordBottomSheet(
     )
     {
         Column(modifier = modifier.padding(24.dp)) {
-
-
             Button(onClick = {
                 onAddClick()
             }) {
@@ -178,10 +192,14 @@ fun PreviewWordList() {
     WordsListScreen(
         listOf(
             Word(0, "Cat", "고양이"),
-            Word(1, "Dog", "강아지")
+            Word(1, "Dog", "강아지멍멍")
         ),
         actionListener = object : ActionListener {
             override fun onClick(action: Action) {
+                /* no-op */
+            }
+
+            override fun onLongPress(action: Action) {
                 /* no-op */
             }
         },

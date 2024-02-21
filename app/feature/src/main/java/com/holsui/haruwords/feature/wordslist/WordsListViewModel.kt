@@ -24,6 +24,12 @@ class WordsListViewModel @Inject constructor(
     private val _showAlert = mutableStateOf(false)
     val showAlert: MutableState<Boolean> get() = _showAlert
 
+    val isPopUpVisible = mutableStateOf(false)
+
+    private val _wordToShowPopUp : MutableState<Int?> = mutableStateOf(null)
+    val wordToShowPopUp : MutableState<Int?> get() = _wordToShowPopUp
+
+
     val wordList: StateFlow<List<Word>> = getAllWordsUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
@@ -43,5 +49,10 @@ class WordsListViewModel @Inject constructor(
                 _showAlert.value = true
             }
         }
+    }
+
+    fun showPopUpMenu(id:Int) {
+        isPopUpVisible.value = true
+        _wordToShowPopUp.value = id
     }
 }

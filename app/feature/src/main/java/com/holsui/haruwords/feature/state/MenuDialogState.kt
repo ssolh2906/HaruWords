@@ -4,6 +4,6 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class MenuDialogState(
-    val contextMenuWordId: Int,
-    val visible: Boolean,
+    val contextMenuWordId: Int? = null,
+    val visible: Boolean = false,
 )

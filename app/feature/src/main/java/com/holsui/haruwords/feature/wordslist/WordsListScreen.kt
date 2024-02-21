@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.holsui.haruwords.domain.models.Word
+import com.holsui.haruwords.feature.state.MenuDialogState
 import com.holsui.haruwords.feature.util.Action
 import com.holsui.haruwords.feature.util.ActionListener
 import com.holsui.haruwords.feature.wordslist.WordListActions.OnCardClick
@@ -42,7 +43,7 @@ fun WordsListRoute(
 ) {
     val wordList by viewModel.wordList.collectAsState()
     val showAlert by viewModel.showAlert
-    val isPopUpVisible by viewModel.isPopUpVisible
+    val menuDialogState by viewModel.menuDialogState.collectAsState()
 
     val actionListener: ActionListener = object : ActionListener {
         override fun onClick(action: Action) {
@@ -68,9 +69,22 @@ fun WordsListRoute(
             }
         }
 
+        override fun onDismiss(action: Action) {
+            when(action) {
+                WordListActions.OnDismissMenu -> {
+                    viewModel.onDismissMenu()
+                }
+            }
+        }
+
 
     }
-    WordsListScreen(wordList, actionListener, showAlert, isPopUpVisible)
+    WordsListScreen(
+        wordList = wordList,
+        actionListener = actionListener,
+        menuDialogState = menuDialogState,
+        showAlert = showAlert,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,16 +92,12 @@ fun WordsListRoute(
 fun WordsListScreen(
     wordList: List<Word>,
     actionListener: ActionListener,
-    showAlert: Boolean = false,
-    isPopUpVisible: Boolean = false,
-    popUpWordId: Int? = null,
-    modifier: Modifier = Modifier
+    menuDialogState: MenuDialogState,
+    modifier: Modifier = Modifier,
+    showAlert: Boolean = false
 ) {
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable {
-        mutableStateOf(false)
-    }
-    var isPopUpOpen by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -103,11 +113,11 @@ fun WordsListScreen(
                 Text(text = "Duplicated Word")
             }
         }
-        if (isPopUpOpen) {
-            Dialog(onDismissRequest = { isPopUpOpen = false }) {
+        if (menuDialogState.visible) {
+            Dialog(onDismissRequest = { actionListener.onDismiss(WordListActions.OnDismissMenu) }) {
                 Surface {
                     Column {
-                        Text(text = "pop up for id:" + popUpWordId)
+                        Text(text = "Menu")
                     }
                 }
             }
@@ -199,9 +209,14 @@ fun PreviewWordList() {
                 /* no-op */
             }
 
+            override fun onDismiss(action: Action) {
+                /* no-op */
+            }
+
             override fun onLongPress(action: Action) {
                 /* no-op */
             }
         },
+        menuDialogState = MenuDialogState()
     )
 }

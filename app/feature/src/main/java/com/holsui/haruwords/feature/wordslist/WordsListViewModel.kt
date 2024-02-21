@@ -7,10 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.holsui.haruwords.domain.models.Word
 import com.holsui.haruwords.domain.usecase.AddWordUseCase
 import com.holsui.haruwords.domain.usecase.GetAllWordsUseCase
+import com.holsui.haruwords.feature.state.MenuDialogState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,11 +28,8 @@ class WordsListViewModel @Inject constructor(
     private val _showAlert = mutableStateOf(false)
     val showAlert: MutableState<Boolean> get() = _showAlert
 
-    val isPopUpVisible = mutableStateOf(false)
-
-    private val _wordToShowPopUp : MutableState<Int?> = mutableStateOf(null)
-    val wordToShowPopUp : MutableState<Int?> get() = _wordToShowPopUp
-
+    private val _menuDialogState = MutableStateFlow(MenuDialogState())
+    val menuDialogState = _menuDialogState.asStateFlow()
 
     val wordList: StateFlow<List<Word>> = getAllWordsUseCase().stateIn(
         scope = viewModelScope,
@@ -52,7 +53,17 @@ class WordsListViewModel @Inject constructor(
     }
 
     fun showPopUpMenu(id:Int) {
-        isPopUpVisible.value = true
-        _wordToShowPopUp.value = id
+        _menuDialogState.update {
+            it.copy(
+                visible = true,
+                contextMenuWordId = id
+            )
+        }
+    }
+
+    fun onDismissMenu() {
+        _menuDialogState.update {
+            it.copy(visible = false)
+        }
     }
 }

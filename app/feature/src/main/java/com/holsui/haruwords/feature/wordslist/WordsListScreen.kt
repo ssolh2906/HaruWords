@@ -18,11 +18,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -34,8 +36,7 @@ import com.holsui.haruwords.domain.models.Word
 import com.holsui.haruwords.feature.state.MenuDialogState
 import com.holsui.haruwords.feature.util.Action
 import com.holsui.haruwords.feature.util.ActionListener
-import com.holsui.haruwords.feature.wordslist.WordListActions.OnCardClick
-import com.holsui.haruwords.feature.wordslist.WordListActions.OnCardLongClick
+import com.holsui.haruwords.feature.wordslist.WordListActions.*
 
 @Composable
 fun WordsListRoute(
@@ -48,8 +49,9 @@ fun WordsListRoute(
     val actionListener: ActionListener = object : ActionListener {
         override fun onClick(action: Action) {
             when (action) {
-                WordListActions.OnAddClick -> {
-                    viewModel.addWord()
+                is OnAddClick -> {
+                    viewModel.addWord(action.word, action.meaning)
+                    // TODO: get input for new word
                 }
 
                 is OnCardClick -> {
@@ -70,8 +72,8 @@ fun WordsListRoute(
         }
 
         override fun onDismiss(action: Action) {
-            when(action) {
-                WordListActions.OnDismissMenu -> {
+            when (action) {
+                OnDismissMenu -> {
                     viewModel.onDismissMenu()
                 }
             }
@@ -114,7 +116,7 @@ fun WordsListScreen(
             }
         }
         if (menuDialogState.visible) {
-            Dialog(onDismissRequest = { actionListener.onDismiss(WordListActions.OnDismissMenu) }) {
+            Dialog(onDismissRequest = { actionListener.onDismiss(OnDismissMenu) }) {
                 Surface {
                     Column {
                         Text(text = "Menu")
@@ -134,7 +136,9 @@ fun WordsListScreen(
                     modifier = Modifier,
                     sheetState = sheetState,
                     onDismissRequest = { isSheetOpen = false },
-                    onAddClick = { actionListener.onClick(WordListActions.OnAddClick) }
+                    onAddClick = { word, meaning ->
+                        actionListener.onClick(OnAddClick(word, meaning))
+                    }
                 )
             }
         }
@@ -177,8 +181,10 @@ fun NewWordBottomSheet(
     modifier: Modifier,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    onAddClick: () -> Unit
+    onAddClick: (String, String) -> Unit
 ) {
+    var word: String by remember { mutableStateOf("") }
+    var meaning: String by remember { mutableStateOf("") }
     ModalBottomSheet(
         onDismissRequest = {
             onDismissRequest()
@@ -187,8 +193,20 @@ fun NewWordBottomSheet(
     )
     {
         Column(modifier = modifier.padding(24.dp)) {
+            TextField(
+                value = word,
+                onValueChange = {
+                    word = it
+                }
+            )
+            TextField(
+                value = meaning,
+                onValueChange = {
+                    meaning = it
+                }
+            )
             Button(onClick = {
-                onAddClick()
+                onAddClick(word, meaning)
             }) {
                 Text(text = "ADD")
             }

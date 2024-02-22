@@ -37,14 +37,17 @@ class WordsListViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
-    fun addWord() {
+    fun addWord(word: String, meaning: String) {
         viewModelScope.launch {
             val result = runCatching {
                 addWordUseCase.invoke(
                     Word(
-                        word = "고양이", mean = "cat"
+                        word = word, mean = meaning
                     )
                 )
+            }
+            result.onSuccess {
+                // TODO: hoist add word dialog state, close dialog here
             }
             result.onFailure {
                 _showAlert.value = true
@@ -52,7 +55,7 @@ class WordsListViewModel @Inject constructor(
         }
     }
 
-    fun showPopUpMenu(id:Int) {
+    fun showPopUpMenu(id: Int) {
         _menuDialogState.update {
             it.copy(
                 visible = true,

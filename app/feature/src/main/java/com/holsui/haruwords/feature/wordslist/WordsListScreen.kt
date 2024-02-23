@@ -64,6 +64,10 @@ fun WordsListRoute(
 
                 }
 
+                OnDeleteWordClick -> {
+                    viewModel.deleteWord()
+                }
+
                 else -> {/* no-op */
                 }
             }

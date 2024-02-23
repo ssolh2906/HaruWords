@@ -1,11 +1,13 @@
 package com.holsui.haruwords.feature.wordslist
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.holsui.haruwords.domain.models.Word
 import com.holsui.haruwords.domain.usecase.AddWordUseCase
+import com.holsui.haruwords.domain.usecase.DeleteWordUseCase
 import com.holsui.haruwords.domain.usecase.GetAllWordsUseCase
 import com.holsui.haruwords.feature.state.MenuDialogState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WordsListViewModel @Inject constructor(
     private val addWordUseCase: AddWordUseCase,
+    private val deleteWordUseCase: DeleteWordUseCase,
     private val getAllWordsUseCase: GetAllWordsUseCase,
 ) : ViewModel() {
 
@@ -51,6 +54,21 @@ class WordsListViewModel @Inject constructor(
             }
             result.onFailure {
                 _showAlert.value = true
+            }
+        }
+    }
+
+    fun deleteWord() {
+        viewModelScope.launch {
+            val result = runCatching {
+                menuDialogState.value.contextMenuWordId
+                    ?.let { deleteWordUseCase.invoke(it) }
+            }
+            result.onSuccess {
+                // TODO:  
+            }
+            result.onFailure {
+                // TODO:  
             }
         }
     }

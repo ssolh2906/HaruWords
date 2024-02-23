@@ -9,5 +9,5 @@ interface WordRepository {
 
     suspend fun addWord(word: Word)
 
-    suspend fun deleteWord(word: Word)
+    suspend fun deleteWordById(id:Int)
 }

@@ -16,6 +16,6 @@ interface WordDao {
     @Insert
     fun insertWords(vararg words: WordEntity)
 
-    @Delete
-    fun deleteWords(vararg words: WordEntity)
+    @Query("DELETE FROM words WHERE primary_key = :id")
+    fun deleteById(id: Int)
 }

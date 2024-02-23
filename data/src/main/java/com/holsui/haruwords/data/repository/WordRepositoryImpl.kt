@@ -7,11 +7,9 @@ import com.holsui.haruwords.data.models.asExternalModel
 import com.holsui.haruwords.domain.models.Word
 import com.holsui.haruwords.domain.repository.WordRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.lang.Error
 import javax.inject.Inject
 
 class WordRepositoryImpl @Inject constructor(
@@ -34,7 +32,9 @@ class WordRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteWord(word: Word) {
-        wordDao.deleteWords(word.asEntity())
+    override suspend fun deleteWordById(id: Int) {
+        withContext(defaultDispatcher) {
+            wordDao.deleteById(id)
+        }
     }
 }

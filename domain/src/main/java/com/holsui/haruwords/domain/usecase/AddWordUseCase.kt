@@ -9,8 +9,8 @@ class AddWordUseCase @Inject constructor(private val wordRepository: WordReposit
 
     suspend operator fun invoke(word: Word) {
         try {
-        wordRepository.addWord(word) }
-        catch (e:Error) {
+            wordRepository.addWord(word)
+        } catch (e: Error) {
             throw e
         }
     }

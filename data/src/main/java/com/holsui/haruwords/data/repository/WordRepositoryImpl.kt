@@ -34,7 +34,11 @@ class WordRepositoryImpl @Inject constructor(
 
     override suspend fun deleteWordById(id: Int) {
         withContext(defaultDispatcher) {
-            wordDao.deleteById(id)
+            try {
+                wordDao.deleteById(id)
+            } catch (e: Error) {
+                throw e
+            }
         }
     }
 }

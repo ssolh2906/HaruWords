@@ -8,4 +8,5 @@ interface WordListActions : Action {
     class OnCardClick(val word: Word) : WordListActions
     class OnCardLongClick(val contextMenuWordId: Int) : WordListActions
     object OnDismissMenu : WordListActions
+    object OnDeleteWordClick: WordListActions
 }

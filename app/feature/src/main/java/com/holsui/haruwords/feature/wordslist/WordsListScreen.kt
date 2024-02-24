@@ -206,6 +206,7 @@ fun NewWordBottomSheet(
             )
             Button(onClick = {
                 onAddClick(word, meaning)
+                onDismissRequest()
             }) {
                 Text(text = "ADD")
             }
